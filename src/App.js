@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import TaskList from './TaskList';
+import AddTaskForm from './AddTaskForm';
 
 function App() {
+  const [tasks, setTasks] = useState([]);
+
+  const addTask = (newTask) => {
+    // TODO: Implement input validation and date parsing
+    setTasks([...tasks, { ...newTask, id: Date.now(), status: 'To Do' }]);
+  };
+
+  const updateTaskStatus = (taskId, newStatus) => {
+    setTasks(tasks.map(task => 
+      task.id === taskId ? { ...task, status: newStatus } : task
+    ));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Task Management App</h1>
+      <AddTaskForm onAddTask={addTask} />
+      <div className="columns">
+        <TaskList 
+          title="To Do" 
+          tasks={tasks.filter(task => task.status !== 'Done')}
+          onUpdateStatus={updateTaskStatus}
+        />
+        <TaskList 
+          title="Done" 
+          tasks={tasks.filter(task => task.status === 'Done')}
+          onUpdateStatus={updateTaskStatus}
+        />
+      </div>
     </div>
   );
 }
 
 export default App;
+
