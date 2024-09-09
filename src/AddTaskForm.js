@@ -1,4 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react';import React, { useState } from 'react';
+
+function AddTaskForm({ onAddTask }) {
+  const [title, setTitle] = useState('');
+  const [details, setDetails] = useState('');
+  const [dueDate, setDueDate] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Here's where we'll add the large block of code for refactoring later
+    if (title.trim() && details.trim() && dueDate) {
+      const newTask = {
+        title: title.trim(),
+        details: details.trim(),
+        dueDate: new Date(dueDate).toISOString().split('T')[0],
+      };
+      onAddTask(newTask);
+      setTitle('');
+      setDetails('');
+      setDueDate('');
+    } else {
+      alert('Please fill all fields');
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Task Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <textarea
+        placeholder="Task Details"
+        value={details}
+        onChange={(e) => setDetails(e.target.value)}
+      />
+      <input
+        type="date"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
+      <button type="submit">Add Task</button>
+    </form>
+  );
+}
+
+export default AddTaskForm;
 
 function AddTaskForm({ onAddTask }) {
   const [title, setTitle] = useState('');

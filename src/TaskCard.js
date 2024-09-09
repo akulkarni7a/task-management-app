@@ -1,4 +1,23 @@
-import React from 'react';
+import React from 'react';import React from 'react';
+import { calculateDaysRemaining } from './utils/dateUtils';
+
+function TaskCard({ task, onUpdateStatus }) {
+  const daysRemaining = calculateDaysRemaining(task.dueDate);
+
+  return (
+    <div className="task-card">
+      <h3>{task.title}</h3>
+      <p>{task.details}</p>
+      <p>Due: {task.dueDate} ({daysRemaining} days remaining)</p>
+      <p>Status: {task.status}</p>
+      <button onClick={() => onUpdateStatus(task.id, task.status === 'To Do' ? 'Done' : 'To Do')}>
+        Mark as {task.status === 'To Do' ? 'Done' : 'To Do'}
+      </button>
+    </div>
+  );
+}
+
+export default TaskCard;
 
 function TaskCard({ task, onUpdateStatus }) {
   const toggleStatus = () => {
