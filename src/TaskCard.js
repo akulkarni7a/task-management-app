@@ -1,4 +1,4 @@
-import React from 'react';import React from 'react';
+import React from 'react';
 import { calculateDaysRemaining } from './utils/dateUtils';
 
 function TaskCard({ task, onUpdateStatus }) {
