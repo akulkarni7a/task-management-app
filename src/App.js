@@ -23,7 +23,7 @@ function App() {
       <div className="task-lists">
         <TaskList 
           title="To Do" 
-          tasks={tasks.filter(task => task.status === 'To Do')}
+          tasks={tasks.filter(task => task.status === 'To Do' || task.status === 'Done')}
           onUpdateStatus={updateTaskStatus}
         />
         <TaskList 
