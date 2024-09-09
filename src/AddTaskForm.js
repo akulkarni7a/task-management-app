@@ -1,55 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import './AddTaskForm.css';
 
 function AddTaskForm({ onAddTask }) {
   const [title, setTitle] = useState('');
   const [details, setDetails] = useState('');
   const [dueDate, setDueDate] = useState('');
+  const dateInputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Large block of code for input validation and date parsing
-    // This will be a target for future refactoring
-    if (title.trim() === '') {
-      alert('Title is required');
-      return;
+    if (title.trim() && details.trim() && dueDate) {
+      const newTask = {
+        title: title.trim(),
+        details: details.trim(),
+        dueDate: new Date(dueDate).toISOString().split('T')[0],
+      };
+      onAddTask(newTask);
+      setTitle('');
+      setDetails('');
+      setDueDate('');
+    } else {
+      alert('Please fill all fields');
     }
+  };
 
-    if (details.trim() === '') {
-      alert('Details are required');
-      return;
-    }
-
-    if (dueDate.trim() === '') {
-      alert('Due date is required');
-      return;
-    }
-
-    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-    if (!dateRegex.test(dueDate)) {
-      alert('Invalid date format. Please use YYYY-MM-DD');
-      return;
-    }
-
-    const parsedDate = new Date(dueDate);
-    if (isNaN(parsedDate.getTime())) {
-      alert('Invalid date');
-      return;
-    }
-
-    const currentDate = new Date();
-    if (parsedDate < currentDate) {
-      alert('Due date cannot be in the past');
-      return;
-    }
-
-    // If all validations pass, add the task
-    onAddTask({ title, details, dueDate: parsedDate.toISOString() });
-
-    // Clear form fields
-    setTitle('');
-    setDetails('');
-    setDueDate('');
+  const handleDateClick = () => {
+    dateInputRef.current.showPicker();
   };
 
   return (
@@ -65,15 +41,17 @@ function AddTaskForm({ onAddTask }) {
         value={details}
         onChange={(e) => setDetails(e.target.value)}
       />
-      <input
-        type="date"
-        value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
-      />
+      <div className="date-input-wrapper" onClick={handleDateClick}>
+        <input
+          type="date"
+          ref={dateInputRef}
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+        />
+      </div>
       <button type="submit">Add Task</button>
     </form>
   );
 }
 
 export default AddTaskForm;
-
