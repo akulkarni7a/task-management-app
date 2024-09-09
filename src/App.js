@@ -2,6 +2,7 @@ import React, { useState } from 'react';import React, { useState } from 'react';
 import TaskList from './TaskList';
 import AddTaskForm from './AddTaskForm';
 import './App.css';
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
